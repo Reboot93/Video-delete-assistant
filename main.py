@@ -135,9 +135,10 @@ class MainWindow(QWidget, Ui_Form):
         self.killedPotplayer(0)
 
     def stop(self):
-        global status_flag, file_list_number, now_number, quit_flag, updata_flag, run_flag
+        global status_flag, file_list_number, file_list, now_number, quit_flag, updata_flag, run_flag
         quit_flag = 1
         status_flag = 0
+        file_list = []
         file_list_number = 0
         now_number = 0
         updata_flag = 1
