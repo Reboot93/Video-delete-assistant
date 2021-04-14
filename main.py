@@ -1,4 +1,4 @@
-import sys, time, _thread, os, subprocess
+import sys, time, _thread, os, subprocess, shutil
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import pyqtSignal
 from windows import Ui_Form
@@ -163,7 +163,6 @@ class MainWindow(QWidget, Ui_Form):
 
     def delete(self):
         global now_name, quit_flag
-        self.killedPotplayer(1)
         now_name = now_dir[now_dir.rfind('\\') + 1:]
         now_file_dir = now_dir[:now_dir.rfind('\\')]
         del_list = []
@@ -171,10 +170,11 @@ class MainWindow(QWidget, Ui_Form):
             if name.find(now_name[1:-4]) != -1:
                 del_list.append(name)
                 # os.remove(str(now_file_dir) + '/' + str(name))
-        reply = QMessageBox.warning(self, '删除提示', '这些文件将会被删除：\n' + str(del_list) + '请确认',
+        reply = QMessageBox.warning(self, '删除提示', '这些文件将会被删除：\n' + str(del_list) + '\n请确认',
                                     QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
         if reply == QMessageBox.Yes:
             for name in del_list:
+                self.killedPotplayer(1)
                 os.remove(str(now_file_dir) + '/' + str(name))
         else:
             QMessageBox.information(self, '删除提示', '删除操作已经取消')
@@ -182,40 +182,53 @@ class MainWindow(QWidget, Ui_Form):
 
     def del_dir(self):
         global now_name, quit_flag
-        self.killedPotplayer(1)
+        print(now_dir)
         now_flie_dir = now_dir[:now_dir.rfind('\\')]
-        os.remove(now_flie_dir)
-        reply = QMessageBox.warning(self, '删除提示', '该文件夹将会被删除：\n' + now_flie_dir + '请确认',
+        print(now_flie_dir)
+        reply = QMessageBox.warning(self, '删除提示', '该文件夹将会被删除：\n' + now_flie_dir + '\n请确认',
                                     QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
         if reply == QMessageBox.Yes:
-            os.remove(now_flie_dir)
+            self.killedPotplayer(1)
+            time.sleep(0.1)
+            try:
+                shutil.rmtree(now_flie_dir)
+            except:
+                QMessageBox.warning(self, '删除提示', '该文件夹删除：\n' + now_flie_dir + '\n删除失败，请确认状态')
         else:
             QMessageBox.information(self, '删除提示', '删除操作已经取消')
         quit_flag = 0
 
     def del_dir_1(self):
         global now_name, quit_flag
-        self.killedPotplayer(1)
         now_flie_dir = now_dir[:now_dir.rfind('\\')]
         now_flie_dir = now_flie_dir[:now_flie_dir.rfind('/')]
-        reply = QMessageBox.warning(self, '删除提示', '该文件夹将会被删除：\n' + now_flie_dir + '请确认',
+        reply = QMessageBox.warning(self, '删除提示', '该文件夹将会被删除：\n' + now_flie_dir + '\n请确认',
                                     QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
         if reply == QMessageBox.Yes:
-            os.remove(now_flie_dir)
+            self.killedPotplayer(1)
+            time.sleep(0.1)
+            try:
+                shutil.rmtree(now_flie_dir)
+            except:
+                QMessageBox.warning(self, '删除提示', '该文件夹删除：\n' + now_flie_dir + '\n删除失败，请确认状态')
         else:
             QMessageBox.information(self, '删除提示', '删除操作已经取消')
         quit_flag = 0
 
     def del_dir_2(self):
         global now_name, quit_flag
-        self.killedPotplayer(1)
         now_flie_dir = now_dir[:now_dir.rfind('\\')]
         now_flie_dir = now_flie_dir[:now_flie_dir.rfind('/')]
         now_flie_dir = now_flie_dir[:now_flie_dir.rfind('/')]
-        reply = QMessageBox.warning(self, '删除提示', '该文件夹将会被删除：\n' + now_flie_dir + '请确认',
+        reply = QMessageBox.warning(self, '删除提示', '该文件夹将会被删除：\n' + now_flie_dir + '\n请确认',
                                     QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
         if reply == QMessageBox.Yes:
-            os.remove(now_flie_dir)
+            self.killedPotplayer(1)
+            time.sleep(0.1)
+            try:
+                shutil.rmtree(now_flie_dir)
+            except:
+                QMessageBox.warning(self, '删除提示', '该文件夹删除：\n' + now_flie_dir + '\n删除失败，请确认状态')
         else:
             QMessageBox.information(self, '删除提示', '删除操作已经取消')
         quit_flag = 0
