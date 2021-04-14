@@ -6,3 +6,5 @@
 Traverse the video, call potplayer to play, provide a few simple delete options
 
 ![image](https://raw.githubusercontent.com/Reboot93/Video-delete-assistant/master/icon/256x256.ico)
+
+![image](https://raw.githubusercontent.com/Reboot93/Video-delete-assistant/master/ui/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202021-04-14%20184523.png)
