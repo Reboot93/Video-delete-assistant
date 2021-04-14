@@ -201,7 +201,10 @@ class MainWindow(QWidget, Ui_Form):
     def del_dir_1(self):
         global now_name, quit_flag
         now_flie_dir = now_dir[:now_dir.rfind('\\')]
-        now_flie_dir = now_flie_dir[:now_flie_dir.rfind('/')]
+        if now_flie_dir.rfind('\\') == -1:
+            now_flie_dir = now_flie_dir[:now_flie_dir.rfind('/')]
+        else:
+            now_flie_dir = now_flie_dir[:now_flie_dir.rfind('\\')]
         reply = QMessageBox.warning(self, '删除提示', '该文件夹将会被删除：\n' + now_flie_dir + '\n请确认',
                                     QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
         if reply == QMessageBox.Yes:
@@ -218,8 +221,14 @@ class MainWindow(QWidget, Ui_Form):
     def del_dir_2(self):
         global now_name, quit_flag
         now_flie_dir = now_dir[:now_dir.rfind('\\')]
-        now_flie_dir = now_flie_dir[:now_flie_dir.rfind('/')]
-        now_flie_dir = now_flie_dir[:now_flie_dir.rfind('/')]
+        if now_flie_dir.rfind('\\') == -1:
+            now_flie_dir = now_flie_dir[:now_flie_dir.rfind('/')]
+        else:
+            now_flie_dir = now_flie_dir[:now_flie_dir.rfind('\\')]
+        if now_flie_dir.rfind('\\') == -1:
+            now_flie_dir = now_flie_dir[:now_flie_dir.rfind('/')]
+        else:
+            now_flie_dir = now_flie_dir[:now_flie_dir.rfind('\\')]
         reply = QMessageBox.warning(self, '删除提示', '该文件夹将会被删除：\n' + now_flie_dir + '\n请确认',
                                     QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
         if reply == QMessageBox.Yes:
