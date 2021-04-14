@@ -10,6 +10,7 @@ work_dir = ''
 status_flag = 0  # ==(0 = 暂停,1 = 运行)
 updata_flag = 0
 quit_flag = 0
+run_flag = 0
 now_dir = '这里会显示正在播放的文件目录信息'
 now_name = ''
 now_number = 0
@@ -51,14 +52,17 @@ class MainWindow(QWidget, Ui_Form):
         global updata_flag
         i = 0
         while True:
-            time.sleep(0.2)
+            time.sleep(0.02)
             while updata_flag == 1:
                 updata_flag = 0
                 i = i + 1
                 # ===/ 更新控件 /=================================
+                time.sleep(0.02)
                 self.show_potdir.setText(pot_dir)
                 self.show_workdir.setText(work_dir)
+                time.sleep(0.02)
                 self.show_video_dir.append(now_dir)
+                time.sleep(0.02)
                 self.show_video_dir.moveCursor(self.show_video_dir.textCursor().End)
                 self.show_now_number.setText(str(now_number))
                 self.show_files_number.setText(str(file_list_number))
@@ -76,22 +80,23 @@ class MainWindow(QWidget, Ui_Form):
         updata_flag = 1
 
     def findfiles(self):
-        global work_dir, file_list, file_list_number
-        many = 0
+        global work_dir, file_list, file_list_number, now_number
+        file_list_number = 0
+        now_number = 0
+        file_list = []
         for root, dirs, files in os.walk(work_dir):
             for name in files:
                 filename = os.path.join(root, name)
                 if str(filename[-3:]) == 'mp4' or str(filename[-3:]) == 'mkv' or str(filename[-3:]) == 'avi':
                     file_list.append(filename)
-                    many = many + 1
+                    file_list_number = file_list_number + 1
             else:
                 continue
-        file_list_number = many
         print(file_list)
         print(file_list_number)
 
     def play(self):
-        global status_flag, quit_flag, now_dir, updata_flag, file_list, now_number, file_list_number
+        global status_flag, quit_flag, now_dir, updata_flag, file_list, now_number, file_list_number, run_flag
         now_number = 0
         while status_flag == 1:
             while len(file_list) != 0 and status_flag == 1 and quit_flag != 1:
@@ -103,15 +108,15 @@ class MainWindow(QWidget, Ui_Form):
                     if quit_flag == 0:
                         break
                     else:
-                        time.sleep(0.05)
+                        time.sleep(0.1)
                 print(len(file_list))
                 file_list = file_list[1:]
             time.sleep(0.1)
         now_number = 0
-        file_list_number = 0
         updata_flag = 1
         status_flag = 0
         quit_flag = 0
+        run_flag = 0
 
     def conntinue(self):
         global quit_flag
@@ -130,9 +135,16 @@ class MainWindow(QWidget, Ui_Form):
         self.killedPotplayer(0)
 
     def stop(self):
-        global status_flag
+        global status_flag, file_list_number, now_number, quit_flag, updata_flag, run_flag
+        quit_flag = 1
         status_flag = 0
+        file_list_number = 0
+        now_number = 0
+        updata_flag = 1
         self.killedPotplayer(0)
+        time.sleep(0.2)
+        QMessageBox.information(self, '遍历提示', '视频遍历结束')
+        run_flag = 0
 
     def zantin(self):
         global quit_flag
@@ -140,11 +152,15 @@ class MainWindow(QWidget, Ui_Form):
         self.killedPotplayer(1)
 
     def start(self):
-        global status_flag, quit_flag
-        # self.findfiles()
-        status_flag = 1
-        quit_flag = 0
-        _thread.start_new_thread(lambda: self.play(), ())
+        global status_flag, quit_flag, run_flag
+        if run_flag == 0 or run_flag == 2:
+            status_flag = 1
+            quit_flag = 0
+            run_flag = 1
+            _thread.start_new_thread(lambda: self.play(), ())
+        else:
+            print('run_flag = 1')
+            pass
 
     def openPotplayer(self, filename):
         global work_dir, qiut_flag
